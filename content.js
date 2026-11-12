@@ -14,8 +14,10 @@ cats: {
   'ai-tutorials': { name: 'AI Tutorials', desc: 'Step-by-step lessons for getting real work done with AI.' },
   'technology-guides': { name: 'Technology Guides', desc: 'Plain-language explainers on how modern technology works.' }
 },
+// Each article has an image field: src (shown on site, any jpg/webp/svg), og (PNG/JPG used for social sharing), alt (required), credit.
 articles: [
-{ slug: 'best-free-ai-tools-for-beginners-2026', cat: 'ai-tools', date: '2026-11-12',
+{ slug: 'best-free-ai-tools-for-beginners-2026',
+  image: { src: '/assets/images/best-free-ai-tools-for-beginners-2026.svg', og: '/assets/images/best-free-ai-tools-for-beginners-2026.png', alt: 'Illustration of a grid of app tiles with chat, writing, image, search and document icons, representing free AI tools for beginners', credit: 'Original illustration by AI Tech Journal' }, cat: 'ai-tools', date: '2026-11-12',
   title: 'Best Free AI Tools for Beginners in 2026',
   desc: 'A practical starting list of free AI tools for writing, research and design, plus how to pick one and use it safely.',
   body: `<p>Free AI tools are a low-risk way to learn what this technology can and cannot do. Free plans change often, so treat this list as a starting point and check each provider's pricing page before relying on one.</p>
@@ -30,7 +32,8 @@ articles: [
 <p>Never paste passwords, private client data or confidential documents into a free tool. Verify facts, names and numbers yourself, because AI systems can state wrong information confidently.</p>
 <h2>What to do next</h2>
 <p>Keep a short note of which prompts worked. After two weeks you will know which tool deserves a permanent place in your routine.</p>` },
-{ slug: 'how-to-use-chatgpt-to-improve-productivity', cat: 'ai-tutorials', date: '2026-11-12',
+{ slug: 'how-to-use-chatgpt-to-improve-productivity',
+  image: { src: '/assets/images/how-to-use-chatgpt-to-improve-productivity.svg', og: '/assets/images/how-to-use-chatgpt-to-improve-productivity.png', alt: 'Illustration of chat bubbles beside a completed checklist, representing using ChatGPT to improve productivity', credit: 'Original illustration by AI Tech Journal' }, cat: 'ai-tutorials', date: '2026-11-12',
   title: 'How to Use ChatGPT to Improve Productivity',
   desc: 'Five everyday ways to use ChatGPT at work, with a simple prompt formula and the limits you should respect.',
   body: `<p>ChatGPT works best as a fast first-draft partner. You stay in charge of the decisions; it removes the blank page.</p>
@@ -44,7 +47,8 @@ articles: [
 <li><strong>Learn quickly.</strong> Ask it to explain an unfamiliar topic at beginner level, then ask follow-ups.</li></ol>
 <h2>Limits to respect</h2>
 <p>It can produce confident mistakes, so check anything important. Avoid sharing sensitive or confidential information, and review your workplace's AI policy first.</p>` },
-{ slug: 'best-ai-tools-for-students', cat: 'ai-tools', date: '2026-11-12',
+{ slug: 'best-ai-tools-for-students',
+  image: { src: '/assets/images/best-ai-tools-for-students.svg', og: '/assets/images/best-ai-tools-for-students.png', alt: 'Illustration of an open book with a glowing lightbulb and a graduation cap, representing AI tools for students', credit: 'Original illustration by AI Tech Journal' }, cat: 'ai-tools', date: '2026-11-12',
   title: 'Best AI Tools for Students',
   desc: 'AI tools that can help students study, organize and proofread, and how to use them without breaking academic rules.',
   body: `<p>AI can make studying more efficient, but it should support your learning rather than replace it. Always check your school's policy on AI use before submitting any work.</p>
@@ -57,7 +61,8 @@ articles: [
 <p>Ask the tool to explain, then close it and try to explain the idea back in your own words. Ask for practice questions rather than finished answers. Keep your own notes as the source of truth.</p>
 <h2>Stay honest</h2>
 <p>Submitting AI-written work as your own can count as misconduct. Use AI for understanding and feedback, cite it when your instructor requires, and verify any fact or reference it gives you.</p>` },
-{ slug: 'how-ai-is-changing-digital-marketing', cat: 'technology-guides', date: '2026-11-12',
+{ slug: 'how-ai-is-changing-digital-marketing',
+  image: { src: '/assets/images/how-ai-is-changing-digital-marketing.svg', og: '/assets/images/how-ai-is-changing-digital-marketing.png', alt: 'Illustration of a rising bar chart with an upward arrow and a target, representing AI in digital marketing', credit: 'Original illustration by AI Tech Journal' }, cat: 'technology-guides', date: '2026-11-12',
   title: 'How AI Is Changing Digital Marketing',
   desc: 'Where AI helps marketers today, from ideas to analysis, and the risks of relying on it too much.',
   body: `<p>AI is becoming part of everyday marketing work. The best results come when it speeds up routine tasks while people keep control of strategy and quality.</p>
@@ -71,7 +76,8 @@ articles: [
 <p>Unedited AI text tends to sound generic and may contain errors. Google has said it focuses on whether content is helpful rather than how it was produced, while spammy mass-produced pages remain against its policies. Be transparent where rules require it and protect customer data.</p>
 <h2>A balanced approach</h2>
 <p>Use AI for first drafts and analysis, then add real experience, original examples and human review before publishing.</p>` },
-{ slug: 'beginners-guide-to-artificial-intelligence', cat: 'technology-guides', date: '2026-11-12',
+{ slug: 'beginners-guide-to-artificial-intelligence',
+  image: { src: '/assets/images/beginners-guide-to-artificial-intelligence.svg', og: '/assets/images/beginners-guide-to-artificial-intelligence.png', alt: 'Illustration of a neural network of connected nodes, representing an introduction to artificial intelligence', credit: 'Original illustration by AI Tech Journal' }, cat: 'technology-guides', date: '2026-11-12',
   title: "Beginner's Guide to Artificial Intelligence",
   desc: 'A plain-language introduction to AI, machine learning and generative AI, with their strengths and limits.',
   body: `<p>Artificial intelligence (AI) is the broad field of building computer systems that perform tasks we usually associate with human intelligence, such as recognizing speech, translating language or making recommendations.</p>

@@ -7,13 +7,14 @@ const e = s => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&
 const strip = h => h.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
 C.articles.forEach(a => { a.text = strip(a.body); a.read = Math.max(1, Math.ceil(a.text.split(' ').length / 200)); });
 const cats = Object.entries(C.cats);
-const card = a => `<article class="card" data-cat="${a.cat}"><a class="thumb t-${a.cat}" href="/articles/${a.slug}/" tabindex="-1" aria-hidden="true"><span>${C.cats[a.cat].name}</span></a><div class="cb"><a class="tag" href="/${a.cat}/">${C.cats[a.cat].name}</a><h3><a href="/articles/${a.slug}/">${a.title}</a></h3><p>${a.desc}</p><small>${a.date} · ${a.read} min read</small></div></article>`;
+const img = (a, sizes, load, extra = '') => `<img src="${a.image.src}" alt="${e(a.image.alt)}" width="1200" height="630" sizes="${sizes}" loading="${load}" decoding="async"${extra}>`;
+const card = a => `<article class="card" data-cat="${a.cat}"><a class="thumb" href="/articles/${a.slug}/" tabindex="-1">${img(a, '(max-width:600px) 100vw,300px', 'lazy')}</a><div class="cb"><a class="tag" href="/${a.cat}/">${C.cats[a.cat].name}</a><h3><a href="/articles/${a.slug}/">${a.title}</a></h3><p>${a.desc}</p><small>${a.date} · ${a.read} min read</small></div></article>`;
 const side = `<aside class="side"><section><h2>Editor's picks</h2><ol>${C.articles.slice(0, 4).map(a => `<li><a href="/articles/${a.slug}/">${a.title}</a></li>`).join('')}</ol></section><section><h2>Categories</h2><ul>${cats.map(([k, v]) => `<li><a href="/${k}/">${v.name}</a></li>`).join('')}</ul></section></aside>`;
-const layout = ({ t, d, p, main, ld = '', og = 'website', home = false }) => {
+const layout = ({ t, d, p, main, ld = '', og = 'website', home = false, image = null }) => {
   const title = home ? `${S.name}: AI and Technology Guides` : `${t} | ${S.name}`;
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${e(title)}</title><meta name="description" content="${e(d)}"><link rel="canonical" href="${S.url}${p}">
-<meta property="og:type" content="${og}"><meta property="og:title" content="${e(title)}"><meta property="og:description" content="${e(d)}"><meta property="og:url" content="${S.url}${p}"><meta property="og:site_name" content="${S.name}"><meta name="twitter:card" content="summary">
+<meta property="og:type" content="${og}"><meta property="og:title" content="${e(title)}"><meta property="og:description" content="${e(d)}"><meta property="og:url" content="${S.url}${p}"><meta property="og:site_name" content="${S.name}">${image ? `<meta property="og:image" content="${S.url}${image.og}"><meta property="og:image:alt" content="${e(image.alt)}"><meta name="twitter:card" content="summary_large_image">` : '<meta name="twitter:card" content="summary">'}
 ${S.gsc ? `<meta name="google-site-verification" content="${S.gsc}">` : ''}${S.adsense ? `<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${S.adsense}" crossorigin="anonymous"></script>` : ''}
 <link rel="stylesheet" href="/assets/style.css">${ld ? `<script type="application/ld+json">${ld}</script>` : ''}</head><body>
 <a class="skip" href="#main">Skip to content</a>
@@ -26,17 +27,17 @@ ${S.gsc ? `<meta name="google-site-verification" content="${S.gsc}">` : ''}${S.a
 };
 const page = (p, t, d, main, extra = {}) => w(p + 'index.html', layout({ t, d, p, main, ...extra }));
 // Home
-const f = a => a;
-page('/', '', S.tagline + ' Free guides to AI tools, tutorials and technology.', `<section class="hero"><span class="tag">Featured</span><h1><a href="/articles/${C.articles[0].slug}/">${C.articles[0].title}</a></h1><p>${C.articles[0].desc}</p></section>
-<h2>Latest articles</h2><div class="f" role="group" aria-label="Filter by category"><button data-c="all" aria-pressed="true">All</button>${cats.map(([k, v]) => `<button data-c="${k}" aria-pressed="false">${v.name}</button>`).join('')}</div>
-<div class="grid">${C.articles.map(card).join('')}</div>`, { home: true });
+const [A, ...R] = C.articles;
+page('/', '', S.tagline + ' Free guides to AI tools, tutorials and technology.', `<section class="mag" aria-label="Top stories"><a class="lead-story" href="/articles/${A.slug}/">${img(A, '(max-width:860px) 100vw,780px', 'eager', ' fetchpriority="high"')}<div class="ov"><span class="tag">Featured · ${C.cats[A.cat].name}</span><h1>${A.title}</h1><p>${A.desc}</p></div></a><div class="stack">${R.slice(0, 2).map(a => `<a class="mini" href="/articles/${a.slug}/">${img(a, '(max-width:600px) 100vw,380px', 'lazy')}<span class="tag">${C.cats[a.cat].name}</span><h2>${a.title}</h2></a>`).join('')}</div></section>
+<h2 class="sec">Latest articles</h2><div class="f" role="group" aria-label="Filter by category"><button data-c="all" aria-pressed="true">All</button>${cats.map(([k, v]) => `<button data-c="${k}" aria-pressed="false">${v.name}</button>`).join('')}</div>
+<div class="grid">${C.articles.map(card).join('')}</div>`, { home: true, image: A.image });
 // Categories
 cats.forEach(([k, v]) => page(`/${k}/`, v.name, v.desc, `<h1>${v.name}</h1><p class="lead">${v.desc}</p><div class="grid">${C.articles.filter(a => a.cat === k).map(card).join('')}</div>`));
 // Articles
 C.articles.forEach(a => {
   const url = `${S.url}/articles/${a.slug}/`;
-  const ld = JSON.stringify({ '@context': 'https://schema.org', '@type': 'Article', headline: a.title, description: a.desc, datePublished: a.date, dateModified: a.date, author: { '@type': 'Organization', name: S.name }, publisher: { '@type': 'Organization', name: S.name }, mainEntityOfPage: url });
-  page(`/articles/${a.slug}/`, a.title, a.desc, `<nav class="bc" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/${a.cat}/">${C.cats[a.cat].name}</a></nav><article><h1>${a.title}</h1><p class="meta">By ${S.name} · <time datetime="${a.date}">${a.date}</time> · ${a.read} min read</p>${S.sample ? '<p class="note"><strong>Sample content:</strong> this article needs editorial review, fact-checking and expansion with your own experience before publishing.</p>' : ''}${a.body}</article>`, { ld, og: 'article' });
+  const ld = JSON.stringify({ '@context': 'https://schema.org', '@type': 'Article', headline: a.title, description: a.desc, image: S.url + a.image.og, datePublished: a.date, dateModified: a.date, author: { '@type': 'Organization', name: S.name }, publisher: { '@type': 'Organization', name: S.name }, mainEntityOfPage: url });
+  page(`/articles/${a.slug}/`, a.title, a.desc, `<nav class="bc" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/${a.cat}/">${C.cats[a.cat].name}</a></nav><article><h1>${a.title}</h1><p class="meta">By ${S.name} · <time datetime="${a.date}">${a.date}</time> · ${a.read} min read</p><figure class="fi">${img(a, '(max-width:760px) 100vw,720px', 'eager', ' fetchpriority="high"')}<figcaption>${e(a.image.credit)}</figcaption></figure>${S.sample ? '<p class="note"><strong>Sample content:</strong> this article needs editorial review, fact-checking and expansion with your own experience before publishing.</p>' : ''}${a.body}</article>`, { ld, og: 'article', image: a.image });
 });
 // Static pages
 const T = (h, body) => `<h1>${h}</h1>${body}`;
@@ -48,6 +49,7 @@ page('/search/', 'Search', `Search ${S.name} articles.`, `<h1>Search results</h1
 // Assets and SEO files
 fs.mkdirSync(OUT + '/assets', { recursive: true });
 ['style.css', 'main.js'].forEach(n => fs.copyFileSync('assets/' + n, `${OUT}/assets/${n}`));
+fs.cpSync('assets/images', OUT + '/assets/images', { recursive: true });
 w('search-index.json', JSON.stringify(C.articles.map(a => ({ title: a.title, desc: a.desc, url: `/articles/${a.slug}/`, text: a.text }))));
 const urls = ['/', ...cats.map(([k]) => `/${k}/`), '/about/', '/contact/', '/privacy-policy/', '/disclaimer/', ...C.articles.map(a => `/articles/${a.slug}/`)];
 w('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(u => `<url><loc>${S.url}${u}</loc></url>`).join('\n')}\n</urlset>`);
